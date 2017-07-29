@@ -11,13 +11,15 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import Home from './Home';
 import About from './About';
+import BOM from './bom'
 
 class App extends Component {
   constructor() {
     super();
 
     this.state = {
-      drawerOpen: false
+      drawerOpen: false,
+      bom: new BOM('rxsaxWDy3Z3fM7asszHS72HM1v1Pb3zi7jrVIGvG')
     }
   }
 
