@@ -14,6 +14,9 @@ class App extends Component {
   }
 
   determine_location() {
+    this.setState({
+      location_requested: true
+    })
     navigator.geolocation.getCurrentPosition(loc => {
       this.setState({loc: {
         latitude: loc.coords.latitude,
@@ -25,12 +28,15 @@ class App extends Component {
   render() {
     var content = null;
 
-    if (!this.state.loc) {
+    if (!this.state.location_requested) {
       content = (
         <button onClick={this.determine_location.bind(this)}>
           Determine location
         </button>
       )
+
+    } else if (!this.state.loc) {
+      content = <span>Waiting for location</span>
 
     } else if (this.state.loc && !this.state.val) {
       this.bom
