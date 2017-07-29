@@ -1,20 +1,19 @@
-
-class Forecasts {
-    constructor(bom) {
+class ForecastsGridInterval {
+    constructor(bom, url_base) {
         this._bom = bom;
-        this.url_base = bom.url_base + '/forecasts/v1'
+        this.url_base = url_base;
     }
 
-    grid_three_hourly(/* lat, lon || hash */) {
+    get(forecast_type, hash) {
         if (arguments.length === 2) {
-            return this.encodeGeoHash(
+            return this._bom.encodeGeoHash(
                 arguments[0],
                 arguments[1]
-            ).then(this.grid_three_hourly.bind(this));
+            ).then(this.get.bind(this, forecast_type));
         }
 
         return fetch(
-            `${this.url_base}/grid/three-hourly/${hash}/wind`,
+            `${this.url_base}/${hash}/${forecast_type}`,
             {
                 headers: {
                     "accept": "application/vnd.api+json",
@@ -22,6 +21,40 @@ class Forecasts {
                 }
             }
         ).then(res => res.json())
+    }
+}
+
+
+class ForecastsGrid {
+    constructor(bom, url_base) {
+        this._bom = bom;
+        this.url_base = url_base
+    }
+
+    interval(inter) {
+        return ForecastsGridInterval(
+            this._bom,
+            url_base + '/' + inter
+        );
+    }
+}
+
+
+class Forecasts {
+    constructor(bom) {
+        this._bom = bom;
+        this.url_base = bom.url_base + '/forecasts/v1'
+    }
+
+    grid(){
+        return new ForecastsGrid(
+            this._bom,
+            this.url_base + '/grid'
+        );
+    }
+
+    grid_three_hourly(hash) {
+        return this.grid().interval('three-hourly').get(hash);
     }
 }
 
