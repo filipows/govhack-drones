@@ -71,7 +71,7 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={this.home.bind(this)}/>
               <Route exact path='/map' component={this.map.bind(this)}></Route>
-              <Route path='/about' component={About}/>
+              <Route exact path='/about' component={About}/>
             </Switch>
             <Drawer
               docked={false}
