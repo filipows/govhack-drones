@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import AppBar from 'material-ui/AppBar';
 
 import logo from './logo.svg';
 import './App.css';
 import BOM from './bom'
+import muiTheme from './muiTheme';
 
 injectTapEventPlugin();
 
@@ -66,8 +69,9 @@ class App extends Component {
     }
 
     return (
-      <MuiThemeProvider>
-        <div className="App">
+      <MuiThemeProvider muiTheme={getMuiTheme(muiTheme)}>
+         <div className="App">
+          <AppBar title="Wind Buddy" />
           <div className="App-header">
             <img src={logo} className="App-logo" alt="logo" />
             <h2>Welcome to React</h2>
@@ -75,7 +79,7 @@ class App extends Component {
           <p className="App-intro">
             {content}
           </p>
-        </div>
+        </div> 
       </MuiThemeProvider>
 
     );
