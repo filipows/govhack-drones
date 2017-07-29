@@ -4,16 +4,17 @@ class ForecastsGridInterval {
         this.url_base = url_base;
     }
 
-    get(forecast_type, hash) {
-        if (arguments.length === 2) {
-            return this._bom.encodeGeoHash(
-                arguments[0],
-                arguments[1]
-            ).then(this.get.bind(this, forecast_type));
+    get(forecast_type, loc) {
+        if (typeof loc !== 'string') {
+            return (
+                this._bom
+                .encodeGeoHash(loc)
+                .then(this.get.bind(this, forecast_type))
+            );
         }
 
         return fetch(
-            `${this.url_base}/${hash}/${forecast_type}`,
+            `${this.url_base}/${loc}/${forecast_type}`,
             {
                 headers: {
                     "accept": "application/vnd.api+json",
@@ -32,9 +33,9 @@ class ForecastsGrid {
     }
 
     interval(inter) {
-        return ForecastsGridInterval(
+        return new ForecastsGridInterval(
             this._bom,
-            url_base + '/' + inter
+            this.url_base + '/' + inter
         );
     }
 }
@@ -52,10 +53,6 @@ class Forecasts {
             this.url_base + '/grid'
         );
     }
-
-    grid_three_hourly(hash) {
-        return this.grid().interval('three-hourly').get(hash);
-    }
 }
 
 
@@ -69,10 +66,10 @@ class BOM {
         return new Forecasts(this);
     }
 
-    encodeGeoHash(lat, lon) {
+    encodeGeoHash(loc) {
         return fetch(
             `${this.url_base}/locations/v1/geohashes` +
-            `?latitude=${lat}&longitude=${lon}`,
+            `?latitude=${loc.latitude}&longitude=${loc.longitude}`,
             {
                 headers: {
                     "x-api-key": this.api_key
