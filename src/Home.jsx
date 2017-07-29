@@ -6,6 +6,8 @@ import { RaisedButton, CircularProgress, Paper } from 'material-ui';
 import { WeatherTableData } from './components/weather-table-data';
 import './Home.css';
 
+import * as _ from 'lodash';
+
 class Home extends Component {
   constructor() {
     super();
@@ -71,11 +73,16 @@ class Home extends Component {
         console.log(values);
         this.setState({
           data: {
-            // merge data
-            wind: values[0],
-            temp: values[1],
-            rain: values[2],
-            icons: values[3]
+            // merge  data
+            windSpeedKnots: values[0].data.attributes.wind_speed_knots.forecast_data,
+            windSpeedKph: values[0].data.attributes.wind_speed_kph.forecast_data,
+            windDirection: values[0].data.attributes.wind_direction.forecast_data,
+            icons: values[3].data.attributes.icon_descriptor.forecast_data,
+
+            // wind: values[0],
+            // temp: values[1],
+            // rain: values[2],
+            // icons: values[3]
           }
         });
       }).catch((err) => {
