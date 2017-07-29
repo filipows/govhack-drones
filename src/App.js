@@ -50,7 +50,13 @@ class App extends Component {
   }
 
   map() {
-    return <div></div>
+    return <MapPage bom={this.state.bom}
+                    location={this.state.location}
+    />
+  }
+
+  home() {
+    return <Home location={this.state.location}/>
   }
   render() {
 
@@ -63,7 +69,7 @@ class App extends Component {
                     iconElementRight={<IconButton><NearMe/></IconButton>}
             />
             <Switch>
-              <Route exact path='/' component={Home}/>
+              <Route exact path='/' component={this.home.bind(this)}/>
               <Route exact path='/map' component={this.map.bind(this)}></Route>
               <Route path='/about' component={About}/>
             </Switch>
