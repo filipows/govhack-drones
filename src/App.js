@@ -58,8 +58,8 @@ class App extends Component {
   home() {
     return <Home location={this.state.location}/>
   }
-  render() {
 
+  render() {
     return (
         <BrowserRouter>
           <div className="App">
