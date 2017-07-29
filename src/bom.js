@@ -1,3 +1,4 @@
+
 class Forecasts {
     constructor(bom) {
         this._bom = bom;
@@ -6,15 +7,12 @@ class Forecasts {
 
     grid_three_hourly(/* lat, lon || hash */) {
         if (arguments.length === 2) {
-            return this._bom.encodeGeoHash(
+            return this.encodeGeoHash(
                 arguments[0],
                 arguments[1]
-            ).then(
-                data => this.grid_three_hourly(data.data[0]["attributes"]["geohash"])
-            );
+            ).then(this.grid_three_hourly.bind(this));
         }
 
-        var hash = arguments[0];
         return fetch(
             `${this.url_base}/grid/three-hourly/${hash}/wind`,
             {
@@ -47,7 +45,16 @@ class BOM {
                     "x-api-key": this.api_key
                 }
             }
-        ).then(res => res.json())
+        )
+        .then(res => res.json())
+        .then(data => {
+            if (data.errors) {
+                console.log(data.errors);
+                return Promise.reject(data.errors);
+            }
+
+            return data.data[0]["attributes"]["geohash"];
+        })
     }
 }
 
