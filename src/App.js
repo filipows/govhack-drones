@@ -24,7 +24,7 @@ class App extends Component {
         }})
       })
 
-      content = <div>Waiting for location</div>
+      content = <span>Waiting for location</span>
 
     } else if (this.state.loc && !this.state.val) {
       this.bom
@@ -37,7 +37,7 @@ class App extends Component {
       )
       .then(data => this.setState({val: data}));
 
-      content = <div>Loading data</div>;
+      content = <span>Loading data</span>;
     } else {
       content = (
         <span>
