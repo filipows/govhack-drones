@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import {
-  HashRouter,
+  BrowserRouter,
   Switch,
   Route,
   Link
 } from 'react-router-dom';
+
+
 import AppBar from 'material-ui/AppBar';
 import './App.css';
 import Drawer from 'material-ui/Drawer';
@@ -27,7 +29,7 @@ class App extends Component {
   render() {
 
     return (
-        <HashRouter>
+        <BrowserRouter>
           <div className="App">
             <AppBar title="Wind Buddy" onLeftIconButtonTouchTap={this.handleToggleDrawer}/>
             <Switch>
@@ -40,12 +42,21 @@ class App extends Component {
               width={200}
               onRequestChange={ (open) => this.setState({drawerOpen: open}) }
             >
-              <MenuItem onTouchTap={this.handleClose}><Link to='/'>Home</Link></MenuItem>
-              <MenuItem onTouchTap={this.handleClose}>Map</MenuItem>
-              <MenuItem onTouchTap={this.handleClose}><Link to='/about'>About</Link></MenuItem>
+
+              <Link to="/" style={{ textDecoration: 'none' }}>
+                <MenuItem onTouchTap={this.handleClose}>Home</MenuItem>
+              </Link>
+              <Link to="/map" style={{ textDecoration: 'none' }}>
+                <MenuItem onTouchTap={this.handleClose}>Map</MenuItem>
+              </Link>
+              <Link to="/about" style={{ textDecoration: 'none' }}>
+                <MenuItem onTouchTap={this.handleClose}>About</MenuItem>
+              </Link>
+
+
             </Drawer>
           </div> 
-        </HashRouter>
+        </BrowserRouter>
 
     );
   }
