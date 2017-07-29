@@ -13,18 +13,24 @@ class App extends Component {
     }
   }
 
+  determine_location() {
+    navigator.geolocation.getCurrentPosition(loc => {
+      this.setState({loc: {
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude
+      }})
+    });
+  }
+
   render() {
     var content = null;
 
     if (!this.state.loc) {
-      navigator.geolocation.getCurrentPosition(loc => {
-        this.setState({loc: {
-          latitude: loc.coords.latitude,
-          longitude: loc.coords.longitude
-        }})
-      })
-
-      content = <span>Waiting for location</span>
+      content = (
+        <button onClick={this.determine_location.bind(this)}>
+          Determine location
+        </button>
+      )
 
     } else if (this.state.loc && !this.state.val) {
       this.bom
