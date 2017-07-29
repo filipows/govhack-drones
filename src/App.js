@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import logo from './logo.svg';
 import './App.css';
 import BOM from './bom'
+
+injectTapEventPlugin();
 
 class App extends Component {
   constructor() {
@@ -61,15 +66,18 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
+      <MuiThemeProvider>
+        <div className="App">
+          <div className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h2>Welcome to React</h2>
+          </div>
+          <p className="App-intro">
+            {content}
+          </p>
         </div>
-        <p className="App-intro">
-          {content}
-        </p>
-      </div>
+      </MuiThemeProvider>
+
     );
   }
 }
