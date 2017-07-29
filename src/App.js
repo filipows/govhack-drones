@@ -44,9 +44,9 @@ class App extends Component {
               width={200}
               onRequestChange={ (open) => this.setState({drawerOpen: open}) }
             >
-              <MenuItem onTouchTap={this.handleClose}><Link to='/'>Home</Link></MenuItem>
-              <MenuItem onTouchTap={this.handleClose}><Link to='/map'>Map</Link></MenuItem>
-              <MenuItem onTouchTap={this.handleClose}><Link to='/about'>About</Link></MenuItem>
+              <Link to='/'><MenuItem onTouchTap={this.handleClose}>Home</MenuItem></Link>
+              <Link to='/map'><MenuItem onTouchTap={this.handleClose}>Map</MenuItem></Link>
+              <Link to='/about'><MenuItem onTouchTap={this.handleClose}>About</MenuItem></Link>
             </Drawer>
           </div> 
         </HashRouter>
