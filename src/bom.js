@@ -1,15 +1,3 @@
-import {Geohash} from 'geohash';
-
-function _hash(args) {
-    debugger;
-    var hash = args[0];
-    if (args.length === 2) {
-        hash = Geohash.encodeGeoHash(args[0], arguments[1]);
-    }
-    return hash;
-}
-
-
 class Forecasts {
     constructor(bom) {
         this._bom = bom;
@@ -17,8 +5,16 @@ class Forecasts {
     }
 
     grid_three_hourly(/* lat, lon || hash */) {
-        var hash = _hash(arguments);
+        if (arguments.length === 2) {
+            return this._bom.encodeGeoHash(
+                arguments[0],
+                arguments[1]
+            ).then(
+                data => this.grid_three_hourly(data.data[0]["attributes"]["geohash"])
+            );
+        }
 
+        var hash = arguments[0];
         return fetch(
             `${this.url_base}/grid/three-hourly/${hash}/wind`,
             {
@@ -40,6 +36,18 @@ class BOM {
 
     forecasts() {
         return new Forecasts(this);
+    }
+
+    encodeGeoHash(lat, lon) {
+        return fetch(
+            `${this.url_base}/locations/v1/geohashes` +
+            `?latitude=${lat}&longitude=${lon}`,
+            {
+                headers: {
+                    "x-api-key": this.api_key
+                }
+            }
+        ).then(res => res.json())
     }
 }
 
