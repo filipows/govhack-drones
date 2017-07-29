@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  HashRouter,
+  BrowserRouter,
   Switch,
   Route,
   Link
@@ -30,7 +30,7 @@ class App extends Component {
   render() {
 
     return (
-        <HashRouter>
+        <BrowserRouter>
           <div className="App">
             <AppBar title="Wind Buddy" onLeftIconButtonTouchTap={this.handleToggleDrawer}/>
             <Switch>
@@ -49,8 +49,7 @@ class App extends Component {
               <Link to='/about'><MenuItem onTouchTap={this.handleClose}>About</MenuItem></Link>
             </Drawer>
           </div> 
-        </HashRouter>
-
+        </BrowserRouter>
     );
   }
 }
