@@ -40,7 +40,7 @@ class App extends Component {
               <Route exact path='/map' component={this.map.bind(this)}></Route>
               <Route path='/about' component={About}/>
             </Switch>
-            <Drawer 
+            <Drawer
               docked={false}
               open={this.state.drawerOpen}
               width={200}
@@ -50,7 +50,7 @@ class App extends Component {
               <Link to='/map'><MenuItem onTouchTap={this.handleClose}>Map</MenuItem></Link>
               <Link to='/about'><MenuItem onTouchTap={this.handleClose}>About</MenuItem></Link>
             </Drawer>
-          </div> 
+          </div>
         </BrowserRouter>
     );
   }
