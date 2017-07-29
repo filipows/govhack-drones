@@ -24,6 +24,9 @@ class App extends Component {
   handleToggleDrawer = () => this.setState({drawerOpen: !this.state.drawerOpen});
   handleClose = () => this.setState({drawerOpen: false});
 
+  map() {
+    return <div></div>
+  }
   render() {
 
     return (
@@ -32,6 +35,7 @@ class App extends Component {
             <AppBar title="Wind Buddy" onLeftIconButtonTouchTap={this.handleToggleDrawer}/>
             <Switch>
               <Route exact path='/' component={Home}/>
+              <Route exact path='/map' component={this.map.bind(this)}></Route>
               <Route path='/about' component={About}/>
             </Switch>
             <Drawer 
@@ -41,7 +45,7 @@ class App extends Component {
               onRequestChange={ (open) => this.setState({drawerOpen: open}) }
             >
               <MenuItem onTouchTap={this.handleClose}><Link to='/'>Home</Link></MenuItem>
-              <MenuItem onTouchTap={this.handleClose}>Map</MenuItem>
+              <MenuItem onTouchTap={this.handleClose}><Link to='/map'>Map</Link></MenuItem>
               <MenuItem onTouchTap={this.handleClose}><Link to='/about'>About</Link></MenuItem>
             </Drawer>
           </div> 
