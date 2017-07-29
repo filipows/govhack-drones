@@ -10,9 +10,10 @@ import {
 import AppBar from 'material-ui/AppBar';
 import './App.css';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
-import Home from './Home';
+import {MenuItem} from 'material-ui';
+import Home from './Home.jsx';
 import About from './About';
+import HolidayPlanner from './HolidayPlanner';
 
 class App extends Component {
   constructor() {
@@ -35,6 +36,7 @@ class App extends Component {
             <Switch>
               <Route exact path='/' component={Home}/>
               <Route path='/about' component={About}/>
+              <Route path='/holiday-planner' component={HolidayPlanner}/>
             </Switch>
             <Drawer 
               docked={false}
@@ -47,7 +49,10 @@ class App extends Component {
                 <MenuItem onTouchTap={this.handleClose}>Home</MenuItem>
               </Link>
               <Link to="/map" style={{ textDecoration: 'none' }}>
-                <MenuItem onTouchTap={this.handleClose}>Map</MenuItem>
+                <MenuItem onTouchTap={this.handleClose}>Wind Map</MenuItem>
+              </Link>
+              <Link to="/holiday-planner" style={{ textDecoration: 'none' }}>
+                <MenuItem onTouchTap={this.handleClose}>Plan your holidays</MenuItem>
               </Link>
               <Link to="/about" style={{ textDecoration: 'none' }}>
                 <MenuItem onTouchTap={this.handleClose}>About</MenuItem>

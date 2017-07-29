@@ -1,0 +1,1 @@
+export { WeatherTableData } from './weather-table-data.jsx';

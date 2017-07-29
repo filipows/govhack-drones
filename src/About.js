@@ -7,7 +7,15 @@ class About extends Component {
   render() {
     return (
          <div className="About">
-             Wind buddy is awesome!
+             <h2>Wind Buddy was created during GovHack2017 by the folllowing folks:</h2>
+
+            <ul style={ {listStyle: 'none'} }>
+              <li>...</li>
+              <li>...</li>
+              <li>...</li>
+              <li>...</li>
+            </ul>
+             
         </div> 
     );
   }
