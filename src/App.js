@@ -12,6 +12,17 @@ import MenuItem from 'material-ui/MenuItem';
 import Home from './Home';
 import About from './About';
 import BOM from './bom'
+import MapPage from './MapPage'
+import IconButton from 'material-ui/IconButton'
+import NearMe from 'material-ui/svg-icons/maps/near-me'
+
+
+function getCurrentPosition() {
+  return new Promise(function(resolve, reject) {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  })
+}
+
 
 class App extends Component {
   constructor() {
@@ -19,12 +30,24 @@ class App extends Component {
 
     this.state = {
       drawerOpen: false,
-      bom: new BOM('rxsaxWDy3Z3fM7asszHS72HM1v1Pb3zi7jrVIGvG')
+      bom: new BOM('rxsaxWDy3Z3fM7asszHS72HM1v1Pb3zi7jrVIGvG'),
+      location: null
     }
   }
 
   handleToggleDrawer = () => this.setState({drawerOpen: !this.state.drawerOpen});
   handleClose = () => this.setState({drawerOpen: false});
+
+  handleRight() {
+    return getCurrentPosition().then(
+      loc => {
+        this.setState({location: {
+          latitude: loc.coords.latitude,
+          longitude: loc.coords.longitude
+        }})
+      }
+    )
+  }
 
   map() {
     return <div></div>
@@ -34,7 +57,11 @@ class App extends Component {
     return (
         <BrowserRouter>
           <div className="App">
-            <AppBar title="Wind Buddy" onLeftIconButtonTouchTap={this.handleToggleDrawer}/>
+            <AppBar title="Wind Buddy"
+                    onLeftIconButtonTouchTap={this.handleToggleDrawer}
+                    onRightIconButtonTouchTap={this.handleRight.bind(this)}
+                    iconElementRight={<IconButton><NearMe/></IconButton>}
+            />
             <Switch>
               <Route exact path='/' component={Home}/>
               <Route exact path='/map' component={this.map.bind(this)}></Route>
