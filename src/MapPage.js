@@ -161,7 +161,7 @@ class MapPage extends Component {
             }
         );
 
-        return <Map center={position} zoom={13}>
+        return <Map center={position} zoom={5}>
             <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'>
             </TileLayer>
             {markers}
