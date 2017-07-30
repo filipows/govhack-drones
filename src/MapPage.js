@@ -88,6 +88,10 @@ class MapPage extends Component {
     }
 
     render() {
+        if (!this.props.location) {
+            return <div>Click the button in the top right to get your location</div>
+        }
+
         debugger;
         if (this.state.bom && !this.locations_kicked) {
             debugger;
@@ -105,10 +109,6 @@ class MapPage extends Component {
 
         if (this.state.locations.length < locations.length) {
             return <span>Loaded {this.state.locations.length} of {locations.length}</span>
-        }
-
-        if (!this.props.location) {
-            return <div>Click the button in the top right to get your location</div>
         }
 
         if (!this.state.data) {
