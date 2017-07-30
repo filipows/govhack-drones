@@ -8,12 +8,12 @@ import moment from 'moment';
 import * as _ from 'lodash';
 
 var locations = [
-    'Albany',
+    'Albany, Western Australia',
     'Australind',
     'Bunbury',
     'Carnavon',
-    'Cervantes',
-    'Dutch Inn',
+    'Cervantes, Western Australia',
+    'Dutch Inn Beach, Cottesloe, Western Australia',
     'Esperance',
     'Geraldton',
     'Gnarraloo',
@@ -21,16 +21,16 @@ var locations = [
     'Kalbarri',
     'Lancelin',
     'Leeman',
-    'Leighton',
+    'Leighton, Western Australia',
     'Lucky Bay',
     'Mandurah',
     'Margaret River',
     'Monkey Mia',
-    'Pelican Point',
+    'Pelican Point, Western Australia',
     'Perth',
     'Safety Bay',
-    'Snag Island',
-    'Walpole',
+    'Snag Island, Western Australia',
+    'Walpole, Western Australia',
 ]
 
 
