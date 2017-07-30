@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import HeatLayer from './HeatLayer';
-import getMapsApi from 'google-maps-api'
+import googleMapsClient from '@google/maps'
 
 var locations = [
     'Albany',
@@ -64,14 +64,13 @@ class MapPage extends Component {
         }
         this.state = {
             locations: [],
-            gma: null,
+            gma: googleMapsClient.createClient({
+                key: "AIzaSyDQNKJpjfLrBo4FbwSJLGQ2hrD-DhWAszI",
+                Promise: Promise
+            }),
             data: null
         }
 
-        debugger;
-        getMapsApi("API_KEY")().then(
-            gma => this.setState({gma: gma})
-        )
         this.locations_kicked = false;
     }
 
