@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 import HeatLayer from './HeatLayer';
@@ -32,6 +33,10 @@ var locations = [
 
 
 class MapPage extends Component {
+    static propTypes = {
+        bom: PropTypes.object.isRequired
+    };
+
     constructor() {
         super();
         this.initialProps = {
