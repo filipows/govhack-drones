@@ -11,12 +11,11 @@ import * as _ from 'lodash';
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.bom = new BOM('rxsaxWDy3Z3fM7asszHS72HM1v1Pb3zi7jrVIGvG');
+    this.bom = props.bom;
 
     this.state = {
-      data: null,
       loc: props.location
-    }
+    }   
   }
 
   componentWillMount() {
@@ -25,11 +24,12 @@ class Home extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log('new props: ', nextProps);
+    console.log('when receiving props', this.state);
     this.setState({
       loc: nextProps.location
     });
-  }
 
+  }
 
   determine_location() {
     console.log('determining location');
@@ -61,6 +61,7 @@ class Home extends Component {
     var content = null;
 
     console.log('location:', this.state.loc)
+    console.log('state', this.state)
 
     if (!this.state.loc) {
       content = <span>Waiting for location</span>

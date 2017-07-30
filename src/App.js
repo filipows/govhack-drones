@@ -47,9 +47,18 @@ class App extends Component {
           latitude: loc.coords.latitude,
           longitude: loc.coords.longitude
         }})
-      },
-      console.error.bind(console)
-    )
+
+      }
+    ).catch((err) => {
+      console.error(err);
+      console.log('Fallback for Perth')
+      this.setState({
+        location: {
+          latitude: -31.9522,
+          longitude: 115.8614
+        }
+      })
+    })
   }
 
   map() {
@@ -59,7 +68,10 @@ class App extends Component {
   }
 
   home() {
-    return <Home location={this.state.location}/>
+    console.log('home');
+    return <Home bom={this.state.bom} 
+                 location={this.state.location}
+           />
   }
 
   render() {
