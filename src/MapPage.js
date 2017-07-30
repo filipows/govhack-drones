@@ -191,8 +191,6 @@ class MapPage extends Component {
         })
     }
     getForecast(forecasts) {
-        var now = moment();
-
         function closest_to(time) {
             return _.minBy(
                 forecasts,
@@ -200,12 +198,15 @@ class MapPage extends Component {
             )
         }
 
+        var time, now = moment();
         switch(this.state.time_type) {
-            case "Now":           return closest_to(now                );
-            case "In one hour":   return closest_to(now.add({hours: 1}));
-            case "In four hours": return closest_to(now.add({hours: 4}));
-            default:
+            case "Now":           time = now;                 break;
+            case "In one hour":   time = now.add({hours: 1}); break;
+            case "In four hours": time = now.add({hours: 4}); break;
+            default: break;
         }
+
+        return closest_to(time);
     }
 }
 
