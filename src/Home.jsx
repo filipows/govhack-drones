@@ -15,7 +15,7 @@ class Home extends Component {
 
     this.state = {
       loc: props.location
-    }   
+    }
   }
 
   componentWillMount() {

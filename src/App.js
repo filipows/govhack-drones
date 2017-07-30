@@ -108,7 +108,7 @@ class App extends Component {
                 <MenuItem onTouchTap={this.handleClose}>About</MenuItem>
               </Link>
             </Drawer>
-          </div> 
+          </div>
         </BrowserRouter>
 
     );
