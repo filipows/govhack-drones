@@ -14,6 +14,25 @@ const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
 
+const ICONS = {
+  'Sunny': 'wi-day-sunny',
+  'Partly cloudy': 'wi-day-cloudy',
+  'Cloudy': 'wi-day-cloudy',
+  'Shower': 'wi-showers',
+  'Light rain': 'wi-rain-mix',
+  'Hazy': 'wi-day-fog',
+  'Windy': 'wi-cloudy-windy',
+  'Fog': 'wi-day-fog',
+  'Rain': 'wi-rain',
+  'Dusty': 'wi-dust',
+  'Frost': 'wi-snowflake-cold',
+  'Snow': 'wi-day-snow',
+  'Storm': 'wi-day-thunderstorm',
+  'Light shower': 'wi-sleet',
+  'Heavy shower': 'wi-storm-showers',
+  'Cyclone': 'wi-tornado',
+}
+
 export class WeatherTableData extends Component {
   constructor(props) {
     super(props);
@@ -31,6 +50,13 @@ export class WeatherTableData extends Component {
     const date = new Date(time);
     const hours = date.getHours();
     return `${hours}:00`;    
+  }
+
+
+
+  getIconClassNames = (type) => {
+
+    return `wi ${ICONS[type]} wi-flip-vertical`
   }
 
   render() {
@@ -80,7 +106,8 @@ export class WeatherTableData extends Component {
               <TableRowColumn>Icon</TableRowColumn>
                {this.props.data.icons.slice(0, COLUMNS).map( (data) => (
                 <TableHeaderColumn key={data.time}>
-                  { data.value }
+                  {/* { data.value } */}
+                  <i style={ {fontSize: '20px'}} className={this.getIconClassNames(data.value)}></i>
                 </TableHeaderColumn>
               ))} 
             </TableRow>
