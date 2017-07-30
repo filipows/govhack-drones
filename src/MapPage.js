@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
 import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
-import HeatLayer from './HeatLayer';
 import googleMapsClient from '@google/maps'
 
 var locations = [
@@ -138,14 +137,9 @@ class MapPage extends Component {
             </Marker>
         ];
 
-        var data = [
-            position.concat([50])
-        ]
-
         return <Map center={position} zoom={13}>
             <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'>
             </TileLayer>
-            <HeatLayer data={data}/>
             {markers}
         </Map>
     }
