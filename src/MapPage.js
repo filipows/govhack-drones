@@ -174,9 +174,9 @@ class MapPage extends Component {
         };
 
         return <div>
-            <RaisedButton onClick={this.showForecast} label="Now" style={style}/>
-            <RaisedButton onClick={this.showForecast} label="In one hour" style={style}/>
-            <RaisedButton onClick={this.showForecast} label="In four hours" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="Now" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="In one hour" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="In four hours" style={style}/>
             <Map center={position} zoom={5}>
                 <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'>
                 </TileLayer>
