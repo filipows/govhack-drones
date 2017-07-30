@@ -90,6 +90,33 @@ class MapPage extends Component {
         )
     }
 
+    make_marker(data) {
+        var forecasts = data.data.data.attributes.wind_speed_kph.forecast_data;
+
+        var current_wind_speed = parseInt(this.getForecast(forecasts).value, 10);
+
+        if (data.location_name === 'Perth') {
+            console.log('Perth => ', current_wind_speed)
+        }
+
+        var color = colour_for_speed(current_wind_speed)
+
+        return (
+            <CircleMarker
+                center={[data.location.latitude, data.location.longitude]}
+                radius={5}
+                color={format_rgb(color)}
+                key={JSON.stringify([data.location_name, this.state.time_type, current_wind_speed])}
+            >
+                <Popup>
+                    <span>
+                        {current_wind_speed}km/h at {data.location_name}
+                    </span>
+                </Popup>
+            </CircleMarker>
+        )
+    }
+
     render() {
         if (!this.props.location) {
             return <p>Click the button in the top right to get your location</p>
@@ -150,30 +177,7 @@ class MapPage extends Component {
         var markers =
             this.state.locations
             .filter(data => data.data.code !== 'FORECAST-404A')
-            .map(
-            data => {
-                var forecasts = data.data.data.attributes.wind_speed_kph.forecast_data;
-
-                var current_wind_speed = parseInt(this.getForecast(forecasts).value, 10);
-
-                var color = colour_for_speed(current_wind_speed)
-
-                return (
-                    <CircleMarker
-                        center={[data.location.latitude, data.location.longitude]}
-                        radius={5}
-                        color={format_rgb(color)}
-                        key={JSON.stringify([data.location_name, this.state.time_type, current_wind_speed])}
-                    >
-                        <Popup>
-                            <span>
-                                {current_wind_speed}km/h at {data.location_name}
-                            </span>
-                        </Popup>
-                    </CircleMarker>
-                )
-            }
-        );
+            .map(this.make_marker.bind(this));
         const style = {
             margin: 12,
         };
