@@ -209,7 +209,23 @@ class MapPage extends Component {
             )
         }
 
-        var time = moment().add({
+        // grab the available time closest to now
+        var time = (
+            _
+            .chain(forecasts)
+            .map('time')
+            .map(m => moment(m))
+            .minBy(m => {
+                // console.log(m);
+                return m.unix()
+            }
+            )
+            .value()
+        )
+        // console.log(time);
+
+        // add the selected amount
+        time.add({
             hours: {
                 "Now": 0,
                 "In three hours": 3,
