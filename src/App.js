@@ -47,7 +47,8 @@ class App extends Component {
           latitude: loc.coords.latitude,
           longitude: loc.coords.longitude
         }})
-      }
+      },
+      console.error.bind(console)
     )
   }
 
