@@ -32,6 +32,25 @@ var locations = [
 ]
 
 
+function format_rgb(rgb) {
+    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+}
+
+
+var desired_wind_speed = 22.5;
+var factor = v => parseInt(v / desired_wind_speed * 255)
+
+function colour_for_speed(speed) {
+    var diff = Math.abs(desired_wind_speed - speed)
+
+    return [
+        factor(diff),
+        255 - factor(diff),
+        0
+    ];
+}
+
+
 class MapPage extends Component {
     static propTypes = {
         bom: PropTypes.object.isRequired
