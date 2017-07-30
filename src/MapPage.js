@@ -117,42 +117,44 @@ class MapPage extends Component {
         )
     }
 
+    geocode_and_retrieve_for_location(location_name) {
+        this.state.gma.geocode({address: location_name})
+        .asPromise()
+        .then(
+            coded => {
+                var location = coded.json.results[0].geometry.location;
+                location = {
+                    latitude: location.lat,
+                    longitude: location.lng,
+                }
+                return (
+                    this.getForLocation(location)
+                    .then(
+                        data => ({
+                            data: data,
+                            location: location,
+                            location_name: location_name
+                        })
+                    )
+                );
+            }
+        )
+        .then(
+            data => {
+                this.setState({
+                    locations: this.state.locations.concat([data])
+                })
+            }
+        )
+    }
+
     render() {
         if (!this.props.location) {
             return <p>Click the button in the top right to get your location</p>
         }
 
         if (this.props.bom && !this.locations_kicked) {
-            for (const location_name of locations) {
-                this.state.gma.geocode({address: location_name})
-                .asPromise()
-                .then(
-                    coded => {
-                        var location = coded.json.results[0].geometry.location;
-                        location = {
-                            latitude: location.lat,
-                            longitude: location.lng,
-                        }
-                        return (
-                            this.getForLocation(location)
-                            .then(
-                                data => ({
-                                    data: data,
-                                    location: location,
-                                    location_name: location_name
-                                })
-                            )
-                        );
-                    }
-                )
-                .then(
-                    data => {
-                        this.setState({
-                            locations: this.state.locations.concat([data])
-                        })
-                    }
-                )
-            }
+            locations.forEach(this.geocode_and_retrieve_for_location.bind(this));
             this.locations_kicked = true;
         }
 
