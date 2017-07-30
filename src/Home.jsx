@@ -9,18 +9,25 @@ import './Home.css';
 import * as _ from 'lodash';
 
 class Home extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.bom = new BOM('rxsaxWDy3Z3fM7asszHS72HM1v1Pb3zi7jrVIGvG');
 
     this.state = {
       data: null,
-      drawerOpen: false
+      loc: props.location
     }
   }
 
   componentWillMount() {
-    this.determine_location();
+    // this.determine_location();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('new props: ', nextProps);
+    this.setState({
+      loc: nextProps.location
+    });
   }
 
 
@@ -53,12 +60,9 @@ class Home extends Component {
   render() {
     var content = null;
 
-    if (!this.state.location_requested) {
-      content = (
-        <RaisedButton onClick={this.determine_location.bind(this)} label="Determine location" />
-      )
+    console.log('location:', this.state.loc)
 
-    } else if (!this.state.loc) {
+    if (!this.state.loc) {
       content = <span>Waiting for location</span>
 
     } else if (this.state.loc && !this.state.data) {
@@ -73,16 +77,10 @@ class Home extends Component {
         console.log(values);
         this.setState({
           data: {
-            // merge  data
             windSpeedKnots: values[0].data.attributes.wind_speed_knots.forecast_data,
             windSpeedKph: values[0].data.attributes.wind_speed_kph.forecast_data,
             windDirection: values[0].data.attributes.wind_direction.forecast_data,
             icons: values[3].data.attributes.icon_descriptor.forecast_data,
-
-            // wind: values[0],
-            // temp: values[1],
-            // rain: values[2],
-            // icons: values[3]
           }
         });
       }).catch((err) => {
@@ -97,7 +95,7 @@ class Home extends Component {
     } else {
       content = (
         <Paper className="Paper-main" zDepth={2}>
-          <WeatherTableData data={this.state.data}/>
+          <WeatherTableData data={this.state.data} />
         </Paper>
       )
     }
@@ -106,7 +104,6 @@ class Home extends Component {
     return (
       <div className="Home">
         <div className="Home-header">
-          {/* <img src={logo} className="App-logo" alt="logo" /> */}
           <h2>Realtime Wind Forecast Data</h2>
         </div>
         <p>

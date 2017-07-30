@@ -36,7 +36,7 @@ export class WeatherTableData extends Component {
   render() {
     return (
       <div className="Weather-table-data">
-        <h3 style={{paddingTop: 20}}>Nearest future</h3>
+        <h3 style={{paddingTop: 20}}>Today</h3>
         <Table>
           <TableHeader 
             displaySelectAll={false}
