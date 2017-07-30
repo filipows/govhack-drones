@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import {Map, Popup, TileLayer, CircleMarker} from 'react-leaflet';
 import googleMapsClient from '@google/maps'
-import { RaisedButton, CircularProgress } from 'material-ui';
+import { RaisedButton, LinearProgress } from 'material-ui';
 import moment from 'moment';
 import * as _ from 'lodash';
 
@@ -132,8 +132,12 @@ class MapPage extends Component {
         if (this.state.locations.length < locations.length) {
             return (
                 <div>
-                  <p>Loaded {this.state.locations.length} of {locations.length}</p>
-                  <CircularProgress size={80} thickness={5} />
+                    <p>Loading locations</p>
+                    <LinearProgress
+                        value={this.state.locations.length}
+                        max={locations.length}
+                        mode={"determinate"}
+                    />
                 </div>
             )
         }
