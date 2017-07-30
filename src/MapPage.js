@@ -3,17 +3,17 @@ import PropTypes from 'prop-types'
 
 import {Map, Popup, TileLayer, CircleMarker} from 'react-leaflet';
 import googleMapsClient from '@google/maps'
-import RaisedButton from 'material-ui/RaisedButton'
+import { RaisedButton, CircularProgress } from 'material-ui';
 import moment from 'moment';
 import * as _ from 'lodash';
 
 var locations = [
-    'Albany',
+    'Albany, Western Australia',
     'Australind',
     'Bunbury',
     'Carnavon',
-    'Cervantes',
-    'Dutch Inn',
+    'Cervantes, Western Australia',
+    'Dutch Inn Beach, Cottesloe, Western Australia',
     'Esperance',
     'Geraldton',
     'Gnarraloo',
@@ -21,16 +21,16 @@ var locations = [
     'Kalbarri',
     'Lancelin',
     'Leeman',
-    'Leighton',
+    'Leighton, Western Australia',
     'Lucky Bay',
     'Mandurah',
     'Margaret River',
     'Monkey Mia',
-    'Pelican Point',
+    'Pelican Point, Western Australia',
     'Perth',
     'Safety Bay',
-    'Snag Island',
-    'Walpole',
+    'Snag Island, Western Australia',
+    'Walpole, Western Australia',
 ]
 
 
@@ -92,7 +92,7 @@ class MapPage extends Component {
 
     render() {
         if (!this.props.location) {
-            return <div>Click the button in the top right to get your location</div>
+            return <p>Click the button in the top right to get your location</p>
         }
 
         if (this.props.bom && !this.locations_kicked) {
@@ -130,7 +130,12 @@ class MapPage extends Component {
         }
 
         if (this.state.locations.length < locations.length) {
-            return <span>Loaded {this.state.locations.length} of {locations.length}</span>
+            return (
+                <div>
+                  <p>Loaded {this.state.locations.length} of {locations.length}</p>
+                  <CircularProgress size={80} thickness={5} />
+                </div>
+            )
         }
 
         var position = [
@@ -154,6 +159,7 @@ class MapPage extends Component {
                         center={[data.location.latitude, data.location.longitude]}
                         radius={5}
                         color={format_rgb(color)}
+                        key={[data.location_name, this.state.time_type]}
                     >
                         <Popup>
                             <span>
@@ -169,9 +175,9 @@ class MapPage extends Component {
         };
 
         return <div>
-            <RaisedButton onClick={this.showForecast} label="Now" style={style}/>
-            <RaisedButton onClick={this.showForecast} label="In one hour" style={style}/>
-            <RaisedButton onClick={this.showForecast} label="In four hours" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="Now" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="In one hour" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="In four hours" style={style}/>
             <Map center={position} zoom={5}>
                 <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'>
                 </TileLayer>
@@ -186,8 +192,6 @@ class MapPage extends Component {
         })
     }
     getForecast(forecasts) {
-        var now = moment();
-
         function closest_to(time) {
             return _.minBy(
                 forecasts,
@@ -195,12 +199,15 @@ class MapPage extends Component {
             )
         }
 
+        var time, now = moment();
         switch(this.state.time_type) {
-            case "Now":           return closest_to(now                );
-            case "In one hour":   return closest_to(now.add({hours: 1}));
-            case "In four hours": return closest_to(now.add({hours: 4}));
-            default:
+            case "Now":           time = now;                 break;
+            case "In one hour":   time = now.add({hours: 1}); break;
+            case "In four hours": time = now.add({hours: 4}); break;
+            default: break;
         }
+
+        return closest_to(time);
     }
 }
 

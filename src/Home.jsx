@@ -64,7 +64,7 @@ class Home extends Component {
     console.log('state', this.state)
 
     if (!this.state.loc) {
-      content = <span>Click the button in the top right to get your location</span>
+      content = <p>Click the button in the top right to get your location</p>
 
     } else if (this.state.loc && !this.state.data) {
       console.log('determined location');
