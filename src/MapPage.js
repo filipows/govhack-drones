@@ -159,7 +159,7 @@ class MapPage extends Component {
                         center={[data.location.latitude, data.location.longitude]}
                         radius={5}
                         color={format_rgb(color)}
-                        key={[data.location_name, this.state.time_type]}
+                        key={JSON.stringify([data.location_name, this.state.time_type, current_wind_speed])}
                     >
                         <Popup>
                             <span>
