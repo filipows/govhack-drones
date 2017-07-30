@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 
 import {Map, Popup, TileLayer, CircleMarker} from 'react-leaflet';
 import googleMapsClient from '@google/maps'
+import RaisedButton from 'material-ui/RaisedButton'
 import moment from 'moment';
+import * as _ from 'lodash';
 
 var locations = [
     'Albany',
@@ -68,7 +70,8 @@ class MapPage extends Component {
                 key: "AIzaSyDQNKJpjfLrBo4FbwSJLGQ2hrD-DhWAszI",
                 Promise: Promise
             }),
-            data: null
+            data: null,
+            time_type: "Now"
         }
 
         this.locations_kicked = false;
@@ -142,7 +145,7 @@ class MapPage extends Component {
             data => {
                 var forecasts = data.data.data.attributes.wind_speed_kph.forecast_data;
 
-                var current_wind_speed = parseInt(forecasts[0].value, 10);
+                var current_wind_speed = parseInt(this.getForecast(forecasts).value, 10);
 
                 var color = colour_for_speed(current_wind_speed)
 
@@ -161,12 +164,43 @@ class MapPage extends Component {
                 )
             }
         );
+        const style = {
+            margin: 12,
+        };
 
-        return <Map center={position} zoom={5}>
-            <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'>
-            </TileLayer>
-            {markers}
-        </Map>
+        return <div>
+            <RaisedButton onClick={this.showForecast} label="Now" style={style}/>
+            <RaisedButton onClick={this.showForecast} label="In one hour" style={style}/>
+            <RaisedButton onClick={this.showForecast} label="In four hours" style={style}/>
+            <Map center={position} zoom={5}>
+                <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'>
+                </TileLayer>
+                {markers}
+            </Map>
+        </div>
+    }
+
+    showForecast(event) {
+        this.setState({
+            time_type: event.target.textContent
+        })
+    }
+    getForecast(forecasts) {
+        var now = moment();
+
+        function closest_to(time) {
+            return _.minBy(
+                forecasts,
+                forecast => moment(forecast.time).diff(time, 'minutes')
+            )
+        }
+
+        switch(this.state.time_type) {
+            case "Now":           return closest_to(now                );
+            case "In one hour":   return closest_to(now.add({hours: 1}));
+            case "In four hours": return closest_to(now.add({hours: 4}));
+            default:
+        }
     }
 }
 
