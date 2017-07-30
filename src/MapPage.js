@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
-import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import {Map, Popup, TileLayer, CircleMarker} from 'react-leaflet';
 import googleMapsClient from '@google/maps'
+import RaisedButton from 'material-ui/RaisedButton'
+import moment from 'moment';
+import * as _ from 'lodash';
 
 var locations = [
     'Albany',
@@ -37,7 +40,7 @@ function format_rgb(rgb) {
 
 
 var desired_wind_speed = 22.5;
-var factor = v => parseInt(v / desired_wind_speed * 255)
+var factor = v => parseInt(v / desired_wind_speed * 255, 10)
 
 function colour_for_speed(speed) {
     var diff = Math.abs(desired_wind_speed - speed)
@@ -67,7 +70,8 @@ class MapPage extends Component {
                 key: "AIzaSyDQNKJpjfLrBo4FbwSJLGQ2hrD-DhWAszI",
                 Promise: Promise
             }),
-            data: null
+            data: null,
+            time_type: "Now"
         }
 
         this.locations_kicked = false;
@@ -91,18 +95,37 @@ class MapPage extends Component {
             return <div>Click the button in the top right to get your location</div>
         }
 
-        debugger;
-        if (this.state.bom && !this.locations_kicked) {
-            debugger;
-            locations.forEach(
-                location => this.getForLocation(location).then(
+        if (this.props.bom && !this.locations_kicked) {
+            for (const location_name of locations) {
+                this.state.gma.geocode({address: location_name})
+                .asPromise()
+                .then(
+                    coded => {
+                        var location = coded.json.results[0].geometry.location;
+                        location = {
+                            latitude: location.lat,
+                            longitude: location.lng,
+                        }
+                        return (
+                            this.getForLocation(location)
+                            .then(
+                                data => ({
+                                    data: data,
+                                    location: location,
+                                    location_name: location_name
+                                })
+                            )
+                        );
+                    }
+                )
+                .then(
                     data => {
                         this.setState({
                             locations: this.state.locations.concat([data])
                         })
                     }
                 )
-            )
+            }
             this.locations_kicked = true;
         }
 
@@ -110,38 +133,74 @@ class MapPage extends Component {
             return <span>Loaded {this.state.locations.length} of {locations.length}</span>
         }
 
-        if (!this.state.data) {
-            this.getForLocation(
-                this.props.location
-            ).then(data => this.setState({data: data}));
-
-            return <span>
-                Loading data
-                <hr/>
-                {JSON.stringify(this.props.location)}
-            </span>;
-        }
-
         var position = [
             this.props.location.latitude,
             this.props.location.longitude,
         ];
 
-        var markers = [
-            <Marker position={position}>
-                <Popup>
-                    <span>
-                        Something liekl this?
-                    </span>
-                </Popup>
-            </Marker>
-        ];
+        var markers =
+            this.state.locations
+            .filter(data => data.data.code !== 'FORECAST-404A')
+            .map(
+            data => {
+                var forecasts = data.data.data.attributes.wind_speed_kph.forecast_data;
 
-        return <Map center={position} zoom={13}>
-            <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'>
-            </TileLayer>
-            {markers}
-        </Map>
+                var current_wind_speed = parseInt(this.getForecast(forecasts).value, 10);
+
+                var color = colour_for_speed(current_wind_speed)
+
+                return (
+                    <CircleMarker
+                        center={[data.location.latitude, data.location.longitude]}
+                        radius={5}
+                        color={format_rgb(color)}
+                    >
+                        <Popup>
+                            <span>
+                                {current_wind_speed}km/h at {data.location_name}
+                            </span>
+                        </Popup>
+                    </CircleMarker>
+                )
+            }
+        );
+        const style = {
+            margin: 12,
+        };
+
+        return <div>
+            <RaisedButton onClick={this.showForecast} label="Now" style={style}/>
+            <RaisedButton onClick={this.showForecast} label="In one hour" style={style}/>
+            <RaisedButton onClick={this.showForecast} label="In four hours" style={style}/>
+            <Map center={position} zoom={5}>
+                <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'>
+                </TileLayer>
+                {markers}
+            </Map>
+        </div>
+    }
+
+    showForecast(event) {
+        this.setState({
+            time_type: event.target.textContent
+        })
+    }
+    getForecast(forecasts) {
+        var now = moment();
+
+        function closest_to(time) {
+            return _.minBy(
+                forecasts,
+                forecast => moment(forecast.time).diff(time, 'minutes')
+            )
+        }
+
+        switch(this.state.time_type) {
+            case "Now":           return closest_to(now                );
+            case "In one hour":   return closest_to(now.add({hours: 1}));
+            case "In four hours": return closest_to(now.add({hours: 4}));
+            default:
+        }
     }
 }
 
