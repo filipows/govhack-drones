@@ -91,35 +91,42 @@ class MapPage extends Component {
             return <div>Click the button in the top right to get your location</div>
         }
 
-        debugger;
-        if (this.state.bom && !this.locations_kicked) {
-            debugger;
-            locations.forEach(
-                location => this.getForLocation(location).then(
+        if (this.props.bom && !this.locations_kicked) {
+            for (const location_name of locations) {
+                this.state.gma.geocode({address: location_name})
+                .asPromise()
+                .then(
+                    coded => {
+                        var location = coded.json.results[0].geometry.location;
+                        location = {
+                            latitude: location.lat,
+                            longitude: location.lng,
+                        }
+                        return (
+                            this.getForLocation(location)
+                            .then(
+                                data => ({
+                                    data: data,
+                                    location: location,
+                                    location_name: location_name
+                                })
+                            )
+                        );
+                    }
+                )
+                .then(
                     data => {
                         this.setState({
                             locations: this.state.locations.concat([data])
                         })
                     }
                 )
-            )
+            }
             this.locations_kicked = true;
         }
 
         if (this.state.locations.length < locations.length) {
             return <span>Loaded {this.state.locations.length} of {locations.length}</span>
-        }
-
-        if (!this.state.data) {
-            this.getForLocation(
-                this.props.location
-            ).then(data => this.setState({data: data}));
-
-            return <span>
-                Loading data
-                <hr/>
-                {JSON.stringify(this.props.location)}
-            </span>;
         }
 
         var position = [
