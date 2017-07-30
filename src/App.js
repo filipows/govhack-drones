@@ -43,7 +43,6 @@ class App extends Component {
   handleRight() {
     return getCurrentPosition().then(
       loc => {
-        console.log('location current pos:', loc);
         this.setState({location: {
           latitude: loc.coords.latitude,
           longitude: loc.coords.longitude
@@ -59,7 +58,6 @@ class App extends Component {
   }
 
   home() {
-    console.log('location:', this.state.location)
     return <Home location={this.state.location}/>
   }
 
