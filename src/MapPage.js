@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
-import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import {Map, Marker, Popup, TileLayer, CircleMarker} from 'react-leaflet';
 import googleMapsClient from '@google/maps'
 
 var locations = [
@@ -134,15 +134,32 @@ class MapPage extends Component {
             this.props.location.longitude,
         ];
 
-        var markers = [
-            <Marker position={position}>
-                <Popup>
-                    <span>
-                        Something liekl this?
-                    </span>
-                </Popup>
-            </Marker>
-        ];
+        var markers =
+            this.state.locations
+            .filter(data => data.data.code !== 'FORECAST-404A')
+            .map(
+            data => {
+                var forecasts = data.data.data.attributes.wind_speed_kph.forecast_data;
+
+                var current_wind_speed = parseInt(forecasts[0].value);
+
+                var color = colour_for_speed(current_wind_speed)
+
+                return (
+                    <CircleMarker
+                        center={[data.location.latitude, data.location.longitude]}
+                        radius={5}
+                        color={format_rgb(color)}
+                    >
+                        <Popup>
+                            <span>
+                                {current_wind_speed}km/h at {data.location_name}
+                            </span>
+                        </Popup>
+                    </CircleMarker>
+                )
+            }
+        );
 
         return <Map center={position} zoom={13}>
             <TileLayer url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'>
