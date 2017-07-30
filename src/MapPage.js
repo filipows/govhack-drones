@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
-import {Map, Marker, Popup, TileLayer, CircleMarker} from 'react-leaflet';
+import {Map, Popup, TileLayer, CircleMarker} from 'react-leaflet';
 import googleMapsClient from '@google/maps'
 import moment from 'moment';
 
@@ -38,7 +38,7 @@ function format_rgb(rgb) {
 
 
 var desired_wind_speed = 22.5;
-var factor = v => parseInt(v / desired_wind_speed * 255)
+var factor = v => parseInt(v / desired_wind_speed * 255, 10)
 
 function colour_for_speed(speed) {
     var diff = Math.abs(desired_wind_speed - speed)
@@ -142,7 +142,7 @@ class MapPage extends Component {
             data => {
                 var forecasts = data.data.data.attributes.wind_speed_kph.forecast_data;
 
-                var current_wind_speed = parseInt(forecasts[0].value);
+                var current_wind_speed = parseInt(forecasts[0].value, 10);
 
                 var color = colour_for_speed(current_wind_speed)
 
