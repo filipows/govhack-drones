@@ -176,8 +176,8 @@ class MapPage extends Component {
 
         return <div>
             <RaisedButton onClick={this.showForecast.bind(this)} label="Now" style={style}/>
-            <RaisedButton onClick={this.showForecast.bind(this)} label="In one hour" style={style}/>
-            <RaisedButton onClick={this.showForecast.bind(this)} label="In four hours" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="In three hours" style={style}/>
+            <RaisedButton onClick={this.showForecast.bind(this)} label="In six hours" style={style}/>
             <Map center={position} zoom={5}>
                 <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'>
                 </TileLayer>
@@ -199,13 +199,13 @@ class MapPage extends Component {
             )
         }
 
-        var time, now = moment();
-        switch(this.state.time_type) {
-            case "Now":           time = now;                 break;
-            case "In one hour":   time = now.add({hours: 1}); break;
-            case "In four hours": time = now.add({hours: 4}); break;
-            default: break;
-        }
+        var time = moment().add({
+            hours: {
+                "Now": 0,
+                "In three hours": 3,
+                "In six hours": 6
+            }[this.state.time_type]
+        });
 
         return closest_to(time);
     }
