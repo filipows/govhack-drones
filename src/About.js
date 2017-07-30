@@ -10,10 +10,10 @@ class About extends Component {
              <h2>Wind Buddy was created during GovHack2017 by the folllowing folks:</h2>
 
             <ul style={ {listStyle: 'none'} }>
-              <li>...</li>
-              <li>...</li>
-              <li>...</li>
-              <li>...</li>
+              <li>Chris Filipowski</li>
+              <li>David SW Kong</li>
+              <li>Dominic May</li>
+              <li>Rebecca Lim</li>
             </ul>
              
         </div> 
