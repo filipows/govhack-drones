@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import {Map, Marker, Popup, TileLayer, CircleMarker} from 'react-leaflet';
 import googleMapsClient from '@google/maps'
+import moment from 'moment';
 
 var locations = [
     'Albany',
