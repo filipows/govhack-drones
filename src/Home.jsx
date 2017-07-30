@@ -64,7 +64,7 @@ class Home extends Component {
     console.log('state', this.state)
 
     if (!this.state.loc) {
-      content = <span>Waiting for location</span>
+      content = <span>Click the button in the top right to get your location</span>
 
     } else if (this.state.loc && !this.state.data) {
       console.log('determined location');
@@ -95,21 +95,23 @@ class Home extends Component {
         </div>
     } else {
       content = (
-        <Paper className="Paper-main" zDepth={2}>
-          <WeatherTableData data={this.state.data} />
-        </Paper>
+        <div>
+          <div className="Home-header">
+            <h2>Realtime Wind Forecast Data</h2>
+          </div>
+          <Paper className="Paper-main" zDepth={2}>
+            <WeatherTableData data={this.state.data} />
+          </Paper>
+        </div>
       )
     }
 
 
     return (
       <div className="Home">
-        <div className="Home-header">
-          <h2>Realtime Wind Forecast Data</h2>
-        </div>
-        <p>
+        <div>
           {content}
-        </p>
+        </div>
       </div>
     );
   }
