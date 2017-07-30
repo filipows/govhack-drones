@@ -92,7 +92,7 @@ class MapPage extends Component {
 
     render() {
         if (!this.props.location) {
-            return <div>Click the button in the top right to get your location</div>
+            return <p>Click the button in the top right to get your location</p>
         }
 
         if (this.props.bom && !this.locations_kicked) {
