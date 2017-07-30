@@ -159,6 +159,7 @@ class MapPage extends Component {
                         center={[data.location.latitude, data.location.longitude]}
                         radius={5}
                         color={format_rgb(color)}
+                        key={[data.location_name, this.state.time_type]}
                     >
                         <Popup>
                             <span>
